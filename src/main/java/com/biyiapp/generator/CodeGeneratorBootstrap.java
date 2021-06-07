@@ -54,7 +54,7 @@ public class CodeGeneratorBootstrap {
 //                .outPutService(false)
 //                .outPutServiceImpl(false)
 //                .outPutEntity(false)
-                .outPutEntityQuery(false)
+//                .outPutEntityQuery(false)
 //                .outPutMapper(false)
                 .outPutXml(false)
                 .generateByTables(tables);

@@ -15,7 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 #end
 #if(${cfg.BaseClassPackage})
-import ${cfg.BaseClassPackage}.PageQueryWrapper;
+##import ${cfg.BaseClassPackage}.PageQueryWrapper;
 #else
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -70,9 +70,9 @@ public class ${table.controllerName} {
     public Result<${table.entityName}> saveOrUpdate(@Valid @RequestBody ${table.entityName} ${table.entityPath}){
         try {
             ${table.entityPath}Service.saveOrUpdate(${table.entityPath});
-            return  Result.success(${table.entityPath});
+            return  ResultUtil.data(${table.entityPath});
         }catch (Exception e){
-            return Result.error(500,e.getMessage());
+            return ResultUtil.error(500,e.getMessage());
         }
     }
 #if(${cfg.BaseClassPackage})
@@ -84,9 +84,10 @@ public class ${table.controllerName} {
     @ApiOperation("列表")
     @GetMapping("/list")
     public Result<${table.entityName}> list(PageVo pageVo,${table.entityName}Query query) {
-        query.setQueryClazz(${table.entityName}Query.class);
-        Page pageList = (Page) ${table.entityPath}Service.pageQuery(PageUtil.initMpPage(pageVo),query);
-        return Result.success(pageList.getRecords(),new com.biyiapp.service.common.bo.Page(pageList.getRecords(), new Long(pageList.getTotal()).intValue()));
+        QueryWrapper<NjCamera> queryWrapper = new QueryWrapper<NjCamera>() ;
+        //TODO 条件待填写
+        Page page = ${table.entityPath}Service.pageQuery(PageUtil.initMpPage(pageVo),queryWrapper);
+        return ResultUtil.success(page);
     }
 #else
     /**
