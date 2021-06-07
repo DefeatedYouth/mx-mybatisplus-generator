@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
+import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -146,7 +147,7 @@ public class GeneratorService {
                 .setBaseResultMap(true)//XML ResultMap
                 .setServiceName("%sService")
                 .setOpen(false)//是否打开输出目录
-//                .setDateType(DateType.ONLY_DATE)//Date格式,默认LocalDateTime
+                .setDateType(DateType.ONLY_DATE)//Date格式,默认LocalDateTime
                 ;
 
         //数据源配置
