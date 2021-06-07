@@ -81,7 +81,7 @@ public class ${table.controllerName} {
 #if(${cfg.BaseClassPackage})
     /**
      * @desc 分页列表查询
-     * @param query 分页查询对象,新增字段，想要生效必须在xml里的pageQuery里新增判断
+     * @param query 分页查询对象
      * @return 分页结果集
      */
     @ApiOperation("列表")
