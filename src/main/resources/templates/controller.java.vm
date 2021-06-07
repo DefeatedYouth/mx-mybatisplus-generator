@@ -1,0 +1,130 @@
+package ${package.Controller};
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import cn.exrick.xboot.common.utils.*;
+import ${cfg.EntityLocation}.${table.entityName};
+import ${cfg.QueryLocation}.${table.entityName}Query;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import lombok.extern.slf4j.Slf4j;
+import javax.validation.Valid;
+#if(${swagger2})
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+#end
+#if(${cfg.BaseClassPackage})
+import ${cfg.BaseClassPackage}.PageQueryWrapper;
+#else
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+#end
+
+#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+import ${cfg.ServiceLocation}.${table.serviceName};
+
+import java.util.List;
+import cn.exrick.xboot.common.vo.Result;
+/**
+ * @desc $!{table.comment} controller
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+@Slf4j
+#if(${swagger2})
+@ApiModel(value="${entity}对象", description="$!{table.comment}")
+#end
+@Api(tags = "#if(${package.ModuleName})${package.ModuleName}#end-${table.entityPath}")
+#if(${kotlin})
+class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
+
+#else
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+
+    @Autowired
+    private ${table.serviceName} ${table.entityPath}Service;
+
+    /**
+     * @desc 新增或更新,带id为修改，不带id为新增
+     */
+    @ApiOperation("新增或更新")
+    @PostMapping("/saveOrUpdate")
+    public Result<${table.entityName}> saveOrUpdate(@Valid @RequestBody ${table.entityName} ${table.entityPath}){
+        try {
+            ${table.entityPath}Service.saveOrUpdate(${table.entityPath});
+            return  Result.success(${table.entityPath});
+        }catch (Exception e){
+            return Result.error(500,e.getMessage());
+        }
+    }
+#if(${cfg.BaseClassPackage})
+    /**
+     * @desc 分页列表查询
+     * @param query 分页查询对象,新增字段，想要生效必须在xml里的pageQuery里新增判断
+     * @return 分页结果集
+     */
+    @ApiOperation("列表")
+    @GetMapping("/list")
+    public Result<${table.entityName}> list(PageVo pageVo,${table.entityName}Query query) {
+        query.setQueryClazz(${table.entityName}Query.class);
+        Page pageList = (Page) ${table.entityPath}Service.pageQuery(PageUtil.initMpPage(pageVo),query);
+        return Result.success(pageList.getRecords(),new com.biyiapp.service.common.bo.Page(pageList.getRecords(), new Long(pageList.getTotal()).intValue()));
+    }
+#else
+    /**
+    * @desc 分页列表查询
+    * @param query 分页查询对象,新增字段，想要生效必须在xml里的pageQuery里新增判断
+    * @return 分页结果集
+    */
+    @ApiOperation("列表")
+    @GetMapping("/list")
+    public IPage list( ${table.entityName} entity, Page<${table.entityName}> page) {
+
+        IPage pageList = ${table.entityPath}Service.page(page, new QueryWrapper<>(entity));
+
+        return pageList;
+    }
+#end
+
+    @ApiOperation("批量删除")
+    @PostMapping("/remove")
+    public Result remove(@RequestBody BaseReqVO request){
+        try {
+             ${table.entityPath}Service.removeByIds(request.getIds());
+            return  Result.success();
+        }catch (Exception e){
+            return Result.error(500,e.getMessage());
+        }
+    }
+
+    @ApiOperation("单条记录查询")
+    @GetMapping("/getById")
+    public Result<${table.entityName}> getById(BaseReqVO request) {
+        try {
+            ${table.entityName} ${table.entityPath} = ${table.entityPath}Service.getById(request.getId());
+            return  Result.success(${table.entityPath});
+        }catch (Exception e){
+            return Result.error(500,e.getMessage());
+        }
+    }
+}
+
+#end

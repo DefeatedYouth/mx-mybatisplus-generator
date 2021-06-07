@@ -1,0 +1,118 @@
+package ${cfg.QueryLocation};
+
+import java.time.LocalDateTime;
+import ${cfg.EntityLocation}.${table.entityName};
+#if(${entityLombokModel})
+import lombok.*;
+import lombok.experimental.Accessors;
+#end
+#if(${swagger2})
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+#end
+
+/**
+ * @desc $!{table.comment} 列表分页查询对象
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${entityLombokModel})
+@Data
+#if(${superEntityClass})
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+#end
+@Accessors(chain = true)
+@NoArgsConstructor
+@AllArgsConstructor
+#end
+#if(${swagger2})
+@ApiModel(value="${entity}查询对象", description="$!{table.comment}查询对象")
+#end
+public class ${entity}Query extends ${entity}{
+## ----------  BEGIN 字段循环遍历  ----------
+#foreach($field in ${table.fields})
+
+#if(${field.columnType.type} == "LocalDateTime" || ${field.columnType.type} == "DateTime")
+#if(${swagger2})
+    @ApiModelProperty(value = "${field.comment}开始")
+    private LocalDateTime ${field.propertyName}Begin;
+
+    @ApiModelProperty(value = "${field.comment}结束")
+    private LocalDateTime ${field.propertyName}End;
+#else
+    /**
+     * ${field.comment}开始
+     */
+    private LocalDateTime ${field.propertyName}Begin;
+
+    /**
+     * ${field.comment}结束
+     */
+
+    private LocalDateTime ${field.propertyName}End;
+#end
+
+#end
+#end
+## ----------  END 字段循环遍历  ----------
+
+## ----------  BEGIN getSetter  ----------
+#if(!${entityLombokModel})
+#foreach($field in ${table.fields})
+#if(${field.propertyType.equals("boolean")})
+#set($getprefix="is")
+#else
+#set($getprefix="get")
+#end
+#if(${field.columnType.type} != "LocalDateTime" && ${field.columnType.type} != "DateTime")
+    public ${field.propertyType} ${getprefix}${field.capitalName}() {
+        return ${field.propertyName};
+    }
+
+#if(${entityBuilderModel})
+    public ${entity}Query set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+#else
+    public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+#end
+        this.${field.propertyName} = ${field.propertyName};
+#if(${entityBuilderModel})
+        return this;
+#end
+    }
+#else
+    public Date ${getprefix}${field.capitalName}Begin() {
+        return ${field.propertyName}Begin;
+    }
+
+#if(${entityBuilderModel})
+    public ${entity}Query set${field.capitalName}Begin(Date ${field.propertyName}Begin) {
+#else
+    public void set${field.capitalName}Begin(${field.propertyType} ${field.propertyName}Begin) {
+#end
+        this.${field.propertyName}Begin = ${field.propertyName}Begin;
+#if(${entityBuilderModel})
+        return this;
+#end
+    }
+
+    public Date ${getprefix}${field.capitalName}End() {
+        return ${field.propertyName}End;
+    }
+
+#if(${entityBuilderModel})
+    public ${entity}Query set${field.capitalName}End(Date ${field.propertyName}End) {
+#else
+    public void set${field.capitalName}End(Date ${field.propertyName}End) {
+#end
+        this.${field.propertyName}End = ${field.propertyName}End;
+#if(${entityBuilderModel})
+        return this;
+#end
+    }
+
+#end
+## ----------  ENd getSetter  ----------
+#end
+#end
+}
