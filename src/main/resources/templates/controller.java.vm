@@ -51,7 +51,7 @@ import cn.exrick.xboot.common.vo.Result;
 #if(${swagger2})
 @ApiModel(value="${entity}对象", description="$!{table.comment}")
 #end
-@Api(tags = "#if(${package.ModuleName})${package.ModuleName}#end-${table.entityPath}")
+@Api(tags = "#if(${package.ModuleName})${package.ModuleName}#end-${table.comment}")
 #if(${kotlin})
 class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
 

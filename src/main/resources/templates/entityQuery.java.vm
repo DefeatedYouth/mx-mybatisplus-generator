@@ -23,8 +23,6 @@ import io.swagger.annotations.ApiModelProperty;
 @ToString(callSuper = true)
 #end
 @Accessors(chain = true)
-@NoArgsConstructor
-@AllArgsConstructor
 #end
 #if(${swagger2})
 @ApiModel(value="${entity}查询对象", description="$!{table.comment}查询对象")

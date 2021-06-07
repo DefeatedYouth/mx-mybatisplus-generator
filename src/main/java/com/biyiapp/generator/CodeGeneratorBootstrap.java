@@ -25,15 +25,16 @@ public class CodeGeneratorBootstrap {
         //项目根包名
         String rootPackageName = "cn.exrick.xboot.modules";
 
+        String moduleName = "nj";
         //目标controller所在的模块名
-        String controllerModuleName = "nj";
+        String controllerModuleName = moduleName;
 //        String controllerModuleName = "admin";
 //        String controllerModuleName = "portal";
 //        String controllerModuleName = "sio";
         //目标service所在的模块名
-        String serviceModuleName = "nj";
+        String serviceModuleName = moduleName;
         //目标dap所在的模块名
-        String repoModuleName = "nj";
+        String repoModuleName = moduleName;
 
         GeneratorService generatorService = GeneratorService.builder()
                 .AUTHOR(author)
