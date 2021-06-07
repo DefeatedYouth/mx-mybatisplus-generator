@@ -212,10 +212,10 @@ public class GeneratorService {
     private void handel(int type, String serviceRootCodePath, String repoRootCodePath, GlobalConfig config, DataSourceConfig dataSourceConfig, StrategyConfig strategyConfig, Map<String, Object> map, InjectionConfig cfg, TemplateConfig templateConfig, String repoRootMapperPath) {
         //自定义属性,模板中使用
         map.put("RootPackage", rootPackageName);
-        map.put("ServiceLocation", rootPackageName.concat(".").concat(serviceModuleName));
-        map.put("EntityLocation", rootPackageName.concat(".entity"));
-        map.put("MapperLocation", rootPackageName.concat(".dao"));
-        map.put("QueryLocation", rootPackageName.concat(".query"));
+        map.put("ServiceLocation", rootPackageName.concat(".").concat(serviceModuleName).concat(".").concat("service"));
+        map.put("EntityLocation", rootPackageName.concat(".").concat(repoModuleName).concat(".").concat("entity"));
+        map.put("MapperLocation", rootPackageName.concat(".").concat(repoModuleName).concat(".").concat("dao"));
+        map.put("QueryLocation", rootPackageName.concat(".").concat(repoModuleName).concat(".").concat("query"));
 
         TemplateConfig templateConfigTemp = new TemplateConfig();
         templateConfigTemp.setEntityKt(null);
@@ -231,7 +231,7 @@ public class GeneratorService {
 
         //生成自定义查询对象
         if (outPutEntityQuery) {
-            String queryFullPackage = rootPackageName.concat(".").concat(".").concat(entityQueryPackage);
+            String queryFullPackage = rootPackageName.concat(".").concat(repoModuleName).concat(".").concat(entityQueryPackage);
             map.put("EntityQueryPackage", entityQueryPackage);
             String outPutPath = repoRootCodePath.concat(queryFullPackage.replace(".", PATH_SEPARATOR)).concat(PATH_SEPARATOR);
             focList.add(new FileOutConfig("/templates/entityQuery.java.vm") {

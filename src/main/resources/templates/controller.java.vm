@@ -3,10 +3,13 @@ package ${package.Controller};
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
+import cn.exrick.xboot.common.vo.BaseReqVO;
+import cn.exrick.xboot.common.vo.PageVo;
 import cn.exrick.xboot.common.utils.*;
 import ${cfg.EntityLocation}.${table.entityName};
 import ${cfg.QueryLocation}.${table.entityName}Query;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import javax.validation.Valid;
 #if(${swagger2})
@@ -83,11 +86,11 @@ public class ${table.controllerName} {
      */
     @ApiOperation("列表")
     @GetMapping("/list")
-    public Result<${table.entityName}> list(PageVo pageVo,${table.entityName}Query query) {
-        QueryWrapper<NjCamera> queryWrapper = new QueryWrapper<NjCamera>() ;
+    public Result<Page<${table.entityName}>> list(PageVo pageVo,${table.entityName}Query query) {
+        QueryWrapper<${table.entityName}> queryWrapper = new QueryWrapper<${table.entityName}>() ;
         //TODO 条件待填写
-        Page page = ${table.entityPath}Service.pageQuery(PageUtil.initMpPage(pageVo),queryWrapper);
-        return ResultUtil.success(page);
+        Page page = ${table.entityPath}Service.page(PageUtil.initMpPage(pageVo),queryWrapper);
+        return ResultUtil.data(page);
     }
 #else
     /**
@@ -95,14 +98,14 @@ public class ${table.controllerName} {
     * @param query 分页查询对象,新增字段，想要生效必须在xml里的pageQuery里新增判断
     * @return 分页结果集
     */
-    @ApiOperation("列表")
-    @GetMapping("/list")
-    public IPage list( ${table.entityName} entity, Page<${table.entityName}> page) {
-
-        IPage pageList = ${table.entityPath}Service.page(page, new QueryWrapper<>(entity));
-
-        return pageList;
-    }
+##    @ApiOperation("列表")
+##    @GetMapping("/list")
+##    public IPage list( ${table.entityName} entity, Page<${table.entityName}> page) {
+##
+##        IPage pageList = ${table.entityPath}Service.page(page, new QueryWrapper<>(entity));
+##
+##        return pageList;
+##    }
 #end
 
     @ApiOperation("批量删除")
@@ -110,9 +113,9 @@ public class ${table.controllerName} {
     public Result remove(@RequestBody BaseReqVO request){
         try {
              ${table.entityPath}Service.removeByIds(request.getIds());
-            return  Result.success();
+            return  ResultUtil.success(null);
         }catch (Exception e){
-            return Result.error(500,e.getMessage());
+            return ResultUtil.error(500,e.getMessage());
         }
     }
 
@@ -121,9 +124,9 @@ public class ${table.controllerName} {
     public Result<${table.entityName}> getById(BaseReqVO request) {
         try {
             ${table.entityName} ${table.entityPath} = ${table.entityPath}Service.getById(request.getId());
-            return  Result.success(${table.entityPath});
+            return  ResultUtil.data(${table.entityPath});
         }catch (Exception e){
-            return Result.error(500,e.getMessage());
+            return ResultUtil.error(500,e.getMessage());
         }
     }
 }
