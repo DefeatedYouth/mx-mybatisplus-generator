@@ -32,7 +32,7 @@ public class CodeGeneratorBootstrap {
         tabGroupList.add(tables1);
         moduleList.add("anxiaofang");
         //第 2 组，表名数组
-        String[] tables2 = {"base_camera","base_camera_records","base_device","base_device_to_camera","base_site"};
+        String[] tables2 = {"base_camera","base_camera_records","base_device","base_device_to_camera","base_site","base_place"};
         tabGroupList.add(tables2);
         moduleList.add("base");
         //第 3 组，表名数组
@@ -52,7 +52,7 @@ public class CodeGeneratorBootstrap {
         tabGroupList.add(tables6);
         moduleList.add("job");
         //第 7 组，表名数组
-        String[] tables7 = {"robot_alarm","robot_book","robot_insp_message","robot_realdata","robot_resume"};
+        String[] tables7 = {"robot_alarm","robot_book","robot_insp_message","robot_realdata","robot_resume","robot_insp_records"};
         tabGroupList.add(tables7);
         moduleList.add("robot");
         for (int i = 0; i < tabGroupList.size(); i++) {
